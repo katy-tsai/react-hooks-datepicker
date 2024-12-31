@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import DatePicker from "./components/datepicker/DatePicker";
+import DatePicker from "./components/datepicker/DatePicker";
 import DateRangePicker from "./components/datepicker/DateRangePicker";
 import './scss/style.scss'
 function App() {
@@ -16,8 +16,8 @@ function App() {
   }
   return (
     <div >
-      {/* <DatePicker className="app_div" date={date} name="startTime" onApply={onDateHalder} maxDate={"2025/03/12"} minDate={"2024/08/01"} /> */}
-      <DateRangePicker className="app_div" startDate={"2024/12/10"} endDate={"2024/12/30"} name="dateR" onApply={onDateRangeHalder} maxDate={"2025/03/12"} minDate={"2024/08/01"} />
+      <DatePicker className="app_div" date={date} name="startTime" onApply={onDateHalder} maxDate={"2025/03/12"} minDate={"2024/08/01"} />
+      <DateRangePicker className="app_div" startDate={""} endDate={""} name="dateR" onApply={onDateRangeHalder} maxDate={"2025/03/12"} minDate={"2024/08/01"} />
     </div>
   );
 }

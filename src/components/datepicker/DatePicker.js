@@ -1,15 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import useDatePicker from '../../hooks/useDatePicker';
 import SingleCalendar from './SingleCalendar';
 
-const DatePicker = ({ className,date,onApply,name, placeholder,maxDate,minDate}) => {
+const DatePicker = ({ className, date, onApply, name, placeholder, maxDate, minDate, format = "YYYY/MM/DD", autoApply = true }) => {
+    let [inputValue, setInputValue] = useState("")
 
-   let {getNextMonthProps,getPreMonthProps,onInputkeydown,onInputBlur, onInputChange,onOpenCalendar,onCloseCalendar,isOpen,weeks,getCalendarDays ,year,month,months,getDayLabel,getDayProps,onPrevCalendar,onNextCalendar,inputValue} = useDatePicker({ startDate:date ,onApply,name,maxDate,minDate,autoApply:true})
-   let calendarsDays=getCalendarDays(year,month);
+    const onApplyHandler = ({ startTime }, name) => {
+        onApply({ startTime }, name)
+        setInputValue(dayjs(startTime).format(format))
+    }
+    let { startTime, setStartTime, getNextMonthProps, getPreMonthProps, onOpenCalendar, onCloseCalendar, isOpen, setIsOpen, weeks, getCalendarDays, year, month, months, getDayLabel, getDayProps, onPrevCalendar, onNextCalendar } = useDatePicker({ startDate: date, onApply: onApplyHandler, name, maxDate, minDate, autoApply })
+    let calendarsDays = getCalendarDays(year, month);
+    const onInputChange = (e) => {
+        let value = e.target.value;
+        setInputValue(value)
+        setStartTime(dayjs(value).toDate())
+
+    }
+    const onInputBlur = () => {
+        if (dayjs(inputValue).isValid()) {
+            setStartTime(dayjs(inputValue).toDate())
+        } else {
+            if (startTime) {
+                setInputValue(dayjs(startTime).format(format))
+            } else {
+                setInputValue("")
+            }
+
+        }
+
+    }
+    const onInputkeydown = (e) => {
+        if (e.keyCode === 13) {
+            onInputBlur();
+            if (autoApply) {
+                setIsOpen(false)
+            }
+
+        }
+
+    }
 
     return (
-        <div className={[className,"datepicker_wapper",isOpen?'active':""].join(" ")}>
-            <input type="text" value={inputValue} placeholder={placeholder} onClick={onOpenCalendar} onChange={onInputChange} onBlur={onInputBlur} onKeyDown={onInputkeydown}/>
+        <div className={[className, "datepicker_wapper", isOpen ? 'active' : ""].join(" ")}>
+            <input type="text" value={inputValue} placeholder={placeholder} onClick={onOpenCalendar} onChange={onInputChange} onBlur={onInputBlur} onKeyDown={onInputkeydown} />
             <SingleCalendar
                 isOpen={isOpen}
                 getNextMonthProps={getNextMonthProps}
@@ -26,8 +61,8 @@ const DatePicker = ({ className,date,onApply,name, placeholder,maxDate,minDate})
                 onClose={onCloseCalendar}
             />
         </div>
-       
+
     );
 };
 
-export default DatePicker;
+export default DatePicker; 

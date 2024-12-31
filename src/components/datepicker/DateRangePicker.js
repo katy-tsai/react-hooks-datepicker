@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import useDatePicker from '../../hooks/useDatePicker';
 
 const DateRangePicker = ({ className, startDate, endDate, onApply, name, placeholder, maxDate, minDate, format = "YYYY/MM/DD" }) => {
     let [inputValue, setInputValue] = useState("")
+    useEffect(() => {
+        if (startDate && endDate) {
+            setInputValue(`${dayjs(startDate).format(format)} - ${dayjs(endDate).format(format)}`)
+        }
+    }, [])// eslint-disable-line react-hooks/exhaustive-deps
     const onApplyHandler = ({ startTime, endTime }, name) => {
         onApply({ startTime, endTime }, name)
         setInputValue(`${dayjs(startTime).format(format)} - ${dayjs(endTime).format(format)}`)

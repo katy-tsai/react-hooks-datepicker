@@ -15,27 +15,18 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
     let [isOpen, setIsOpen] = useState(false)
     let [year, setYear] = useState(dayjs(startDate).year());
     let [month, setMonth] = useState(dayjs(startDate).month());
-    let [inputValue, setInputValue] = useState("");
+
     let [isStartRange, setIsStartRange] = useState(false);
     let [ranges, setRanges] = useState([])
 
     useEffect(() => {
         if (isRange) {
-            if (startTime && endTime) {
-                setInputValue(`${dayjs(startTime).format(format)}-${dayjs(endTime).format(format)}`)
-            } else {
-                setInputValue("")
-                setStartTime(dayjs(startTime).format(format))
-                setEndTime(dayjs(endTime).format(format))
-            }
+            setStartTime(dayjs(startTime).format(format))
+            setEndTime(dayjs(endTime).format(format))
 
         } else {
-            if (startTime) {
-                setInputValue(dayjs(startTime).format(format))
-            } else {
-                setInputValue("")
+            if (!startTime) {
                 setStartTime(dayjs().format(format))
-                setEndTime(dayjs().format(format))
             }
 
         }
@@ -43,33 +34,16 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
     }, [startTime, endTime]) // eslint-disable-line react-hooks/exhaustive-deps
 
 
-    const onInputBlur = () => {
-        if (dayjs(inputValue).isValid()) {
-            setStartTime(dayjs(inputValue).toDate())
-        } else {
-            if (startTime) {
-                setInputValue(dayjs(startTime).format(format))
-            } else {
-                setInputValue("")
-            }
-
-        }
-
-    }
-    const onInputkeydown = (e) => {
-        if (e.keyCode === 13) {
-            onInputBlur();
-            if (autoApply) {
-                setIsOpen(false)
-            }
-
-        }
-
-    }
 
     const onOpenCalendar = () => {
-        setYear(dayjs(startTime).year())
-        setMonth(dayjs(startTime).month())
+        if (endTime) {
+            setYear(dayjs(endTime).year())
+            setMonth(dayjs(endTime).month())
+        } else {
+            setYear(dayjs(startTime).year())
+            setMonth(dayjs(startTime).month())
+        }
+
         setIsOpen(true)
 
     }
@@ -131,7 +105,9 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
         }
     }
     const onClickDate = (date) => {
+        console.log('onClickDate');
         setStartTime(date)
+
         if (autoApply) {
             setIsOpen(false)
         }
@@ -191,8 +167,8 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
         classNames = [...classNames, isRange ? '' : 'redius'];
         classNames = [...classNames, isRange && startTime === date ? 'startTime' : ''];
         classNames = [...classNames, isRange && endTime === date ? 'endTime' : ''];
-        classNames = [...classNames, dayjs(date).isBetween(startTime, endTime, "()") ? 'bw_active' : ''];
-        classNames = [...classNames, ranges.includes(date) ? 'hover' : ''];
+        classNames = [...classNames, isRange && dayjs(date).isBetween(startTime, endTime, "()") ? 'bw_active' : ''];
+        classNames = [...classNames, isRange && ranges.includes(date) ? 'hover' : ''];
         let isDisabled = false;
         if (maxDate) {
             if (dayjs(date).isAfter(dayjs(maxDate))) {
@@ -213,6 +189,8 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
             classNames = [...classNames, "day_disalbed"]
             isDisabled = true;
         }
+
+        console.log('isRange', isRange);
 
         return {
             key: `day${month}_${dayjs(date).format("YYYYMMDD")}`,
@@ -263,7 +241,7 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
     }
 
 
-    return { getRangeCalendarDays, getNextMonthProps, getPreMonthProps, onInputkeydown, setEndTime, setStartTime, onOpenCalendar, onCloseCalendar, isOpen, getCalendarDays, startTime, endTime, inputValue, weeks, months, year, month, getDayProps, getDayLabel, onPrevCalendar, onNextCalendar };
+    return { getRangeCalendarDays, getNextMonthProps, getPreMonthProps, setEndTime, setStartTime, onOpenCalendar, onCloseCalendar, isOpen, setIsOpen, getCalendarDays, startTime, endTime, weeks, months, year, month, getDayProps, getDayLabel, onPrevCalendar, onNextCalendar };
 };
 
 export default useDatePicker;
