@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+// import DatePicker from "./components/datepicker/DatePicker";
+import DateRangePicker from "./components/datepicker/DateRangePicker";
+import './scss/style.scss'
 function App() {
+  let [date, setDate] = useState("")
+
+
+  const onDateHalder = ({ startTtime, endTime }, name) => {
+    console.log('startTtime', startTtime, endTime);
+    setDate(startTtime)
+  }
+
+  const onDateRangeHalder = ({ startTtime, endTime }, name) => {
+
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      {/* <DatePicker className="app_div" date={date} name="startTime" onApply={onDateHalder} maxDate={"2025/03/12"} minDate={"2024/08/01"} /> */}
+      <DateRangePicker className="app_div" startDate={"2024/12/10"} endDate={"2024/12/30"} name="dateR" onApply={onDateRangeHalder} maxDate={"2025/03/12"} minDate={"2024/08/01"} />
     </div>
   );
 }
