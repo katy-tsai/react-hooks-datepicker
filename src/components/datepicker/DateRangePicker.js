@@ -2,19 +2,18 @@ import React, { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import useDatePicker from '../../hooks/useDatePicker';
 
-const DateRangePicker = ({ className, startDate, endDate, onApply, name, placeholder, maxDate, minDate, format = "YYYY/MM/DD" }) => {
+const DateRangePicker = ({ className, startTime: startDate, endTime: endDate, onApply, name, placeholder, maxDate, minDate, format = "YYYY/MM/DD" }) => {
     let [inputValue, setInputValue] = useState("")
+    let { setStartTime, setEndTime, getNextMonthProps, getPreMonthProps, onOpenCalendar, onCloseCalendar, isOpen, weeks, getRangeCalendarDays, year, month, months, getDayLabel, getDayProps } = useDatePicker({ startDate, endDate, onApply, name, maxDate, minDate, isRange: true, format, autoApply: true })
     useEffect(() => {
         if (startDate && endDate) {
             setInputValue(`${dayjs(startDate).format(format)} - ${dayjs(endDate).format(format)}`)
         }
-    }, [])// eslint-disable-line react-hooks/exhaustive-deps
-    const onApplyHandler = ({ startTime, endTime }, name) => {
-        onApply({ startTime, endTime }, name)
-        setInputValue(`${dayjs(startTime).format(format)} - ${dayjs(endTime).format(format)}`)
-    }
+    }, [startDate, endDate])// eslint-disable-line react-hooks/exhaustive-deps
 
-    let { setStartTime, setEndTime, getNextMonthProps, getPreMonthProps, onOpenCalendar, onCloseCalendar, isOpen, weeks, getRangeCalendarDays, year, month, months, getDayLabel, getDayProps } = useDatePicker({ startDate, endDate, onApply: onApplyHandler, name, maxDate, minDate, isRange: true, format, autoApply: true })
+
+
+
     let calendarsDays = getRangeCalendarDays(year, month);
     const onInputChange = (e) => {
         let value = e.target.value;

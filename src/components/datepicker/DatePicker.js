@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import useDatePicker from '../../hooks/useDatePicker';
 import SingleCalendar from './SingleCalendar';
@@ -6,12 +6,13 @@ import SingleCalendar from './SingleCalendar';
 const DatePicker = ({ className, date, onApply, name, placeholder, maxDate, minDate, format = "YYYY/MM/DD", autoApply = true }) => {
     let [inputValue, setInputValue] = useState("")
 
-    const onApplyHandler = ({ startTime }, name) => {
-        onApply({ startTime }, name)
-        setInputValue(dayjs(startTime).format(format))
-    }
-    let { startTime, setStartTime, getNextMonthProps, getPreMonthProps, onOpenCalendar, onCloseCalendar, isOpen, setIsOpen, weeks, getCalendarDays, year, month, months, getDayLabel, getDayProps, onPrevCalendar, onNextCalendar } = useDatePicker({ startDate: date, onApply: onApplyHandler, name, maxDate, minDate, autoApply })
+    let { startTime, setStartTime, getNextMonthProps, getPreMonthProps, onOpenCalendar, onCloseCalendar, isOpen, setIsOpen, weeks, getCalendarDays, year, month, months, getDayLabel, getDayProps, onPrevCalendar, onNextCalendar } = useDatePicker({ startDate: date, name, onApply, maxDate, minDate, autoApply })
     let calendarsDays = getCalendarDays(year, month);
+    useEffect(() => {
+        if (date) {
+            setInputValue(`${dayjs(date).format(format)} `)
+        }
+    }, [date])// eslint-disable-line react-hooks/exhaustive-deps
     const onInputChange = (e) => {
         let value = e.target.value;
         setInputValue(value)
@@ -61,8 +62,8 @@ const DatePicker = ({ className, date, onApply, name, placeholder, maxDate, minD
                 onClose={onCloseCalendar}
             />
         </div>
+    )
 
-    );
 };
 
 export default DatePicker; 
