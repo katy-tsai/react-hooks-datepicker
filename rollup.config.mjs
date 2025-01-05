@@ -1,15 +1,18 @@
 import { defineConfig } from 'rollup';
+import external from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
-import postcss from 'rollup-plugin-postcss';
 import fs from 'fs';
 import terser from '@rollup/plugin-terser';
+import autoprefixer from 'autoprefixer'
+import postcss from 'rollup-plugin-postcss'
 
 export default defineConfig({
     input: './src/components/index.js', // 入口
     treeshake: false, // 关闭treeshake
     external: [/node_modules/], // 不打包node_modules模块
     plugins: [
+        external(),
         resolve({
             extensions: ['.js', '.jsx', '.json', '.mjs', '.node'],
         }),
@@ -18,7 +21,14 @@ export default defineConfig({
             exclude: 'node_modules/**',
             extensions: ['.js', '.jsx', '.mjs', 'json'],
         }),
-        postcss({ extract: true }), // 出来css
+        postcss({
+            plugins: [
+                autoprefixer
+            ],
+            sourceMap: true,
+            extract: true,
+            extensions: ['.css']
+        }), // 出来css
         // 清理输出目录
         {
             name: 'clean-output',

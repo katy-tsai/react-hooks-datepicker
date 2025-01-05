@@ -103,7 +103,6 @@ const useDatePicker = _ref => {
     }
   };
   const onClickDate = date => {
-    console.log('onClickDate');
     setStartTime(date);
     if (autoApply) {
       setIsOpen(false);
@@ -140,7 +139,6 @@ const useDatePicker = _ref => {
   const onMouseEnterHandler = date => {
     // console.log('onMouseEnter', date);
     if (isStartRange) {
-      console.log('onMouseEnter', date);
       let ranges = [];
       let start = startTime;
       let end = date;
@@ -185,7 +183,6 @@ const useDatePicker = _ref => {
       classNames = [...classNames, "day_disalbed"];
       isDisabled = true;
     }
-    console.log('isRange', isRange);
     return {
       key: `day${month}_${dayjs(date).format("YYYYMMDD")}`,
       onClick: () => isDisabled ? "" : isRange ? onClickRangeDate(date) : onClickDate(date),

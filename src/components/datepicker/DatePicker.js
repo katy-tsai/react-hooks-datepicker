@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import useDatePicker from '../../hooks/useDatePicker';
 import SingleCalendar from './SingleCalendar';
 
+
 const DatePicker = ({ className, date, onApply, name, placeholder, maxDate, minDate, format = "YYYY/MM/DD", autoApply = true }) => {
     let [inputValue, setInputValue] = useState("")
 

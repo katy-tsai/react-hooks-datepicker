@@ -3,18 +3,17 @@ import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import useDatePicker from '../hooks/useDatePicker.js';
 
-const DateRangePicker = _ref => {
-  let {
-    className,
-    startTime: startDate,
-    endTime: endDate,
-    onApply,
-    name,
-    placeholder,
-    maxDate,
-    minDate,
-    format = "YYYY/MM/DD"
-  } = _ref;
+const DateRangePicker = ({
+  className,
+  startTime: startDate,
+  endTime: endDate,
+  onApply,
+  name,
+  placeholder,
+  maxDate,
+  minDate,
+  format = "YYYY/MM/DD"
+}) => {
   let [inputValue, setInputValue] = useState("");
   let {
     setStartTime,

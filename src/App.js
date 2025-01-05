@@ -1,7 +1,8 @@
 import { useState } from "react";
 import DatePicker from "./components/datepicker/DatePicker";
 import DateRangePicker from "./components/datepicker/DateRangePicker";
-import './scss/style.scss'
+import './components/datepicker/_datepicker.scss';
+
 function App() {
   let [date, setDate] = useState("")
   let [searchArgs, setSearchArgs] = useState({

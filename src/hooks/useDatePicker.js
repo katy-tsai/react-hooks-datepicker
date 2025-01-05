@@ -105,7 +105,7 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
         }
     }
     const onClickDate = (date) => {
-        console.log('onClickDate');
+
         setStartTime(date)
 
         if (autoApply) {
@@ -189,8 +189,6 @@ const useDatePicker = ({ startDate, endDate, name, onApply, isRange = false, for
             classNames = [...classNames, "day_disalbed"]
             isDisabled = true;
         }
-
-        console.log('isRange', isRange);
 
         return {
             key: `day${month}_${dayjs(date).format("YYYYMMDD")}`,
